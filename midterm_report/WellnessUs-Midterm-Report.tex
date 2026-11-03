@@ -1,0 +1,227 @@
+\documentclass[10pt,a4paper,openany]{report}
+
+% WellnessUs - Project Progress Evaluation
+% Editable LaTeX version of the 10-page report.
+\usepackage[a4paper,left=0.94in,right=0.94in,top=0.82in,bottom=0.72in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{mathptmx}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage[hidelinks]{hyperref}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\baselinestretch}{1.06}
+\pagestyle{plain}
+\newcommand{\reportchapter}[1]{\chapter{#1}}
+\newcommand{\tocline}[3]{\noindent\hspace*{#1}\parbox[t]{0.83\textwidth}{#2\dotfill}\hfill #3\par\vspace{2pt}}
+
+\begin{document}
+
+% ---------------- Cover page ----------------
+\begin{titlepage}
+\thispagestyle{empty}
+\centering
+\vspace*{0.80in}
+{\bfseries\large UCS503P\par}
+\vspace{0.68in}
+{\bfseries\fontsize{22}{27}\selectfont WellnessUs\par}
+\vspace{0.18in}
+{\large A Personalized Health and Fitness Tracking System\par}
+\vspace{0.62in}
+{\normalsize 1024170387\quad Tejas Singh Tomar\\
+1024170391\quad Cheerag\par}
+\vspace{0.28in}
+BE Third Year, CSE\par
+\vspace{1.42in}
+{\bfseries Project Advisor\par}
+\vspace{0.10in}
+Ms. Paramveer Sidhu\par
+\vspace{0.38in}
+Project Progress Evaluation\par
+\vspace{0.12in}
+{\bfseries Computer Science and Engineering Department\par}
+Thapar Institute of Engineering and Technology, Patiala\par
+\end{titlepage}
+
+% ---------------- Contents (printed page 1) ----------------
+\pagenumbering{arabic}
+\setcounter{page}{1}
+{\bfseries\fontsize{21}{27}\selectfont Contents\par}
+\vspace{0.18in}
+\tocline{0em}{1 Introduction}{2}
+\tocline{1.5em}{1.1 Background and Context}{2}
+\tocline{3em}{1.1.1 Problem Statement}{2}
+\tocline{1.5em}{1.2 Project Objectives}{3}
+\tocline{0em}{2 Methodology and Design}{4}
+\tocline{1.5em}{2.1 System Architecture}{4}
+\tocline{3em}{2.1.1 High-Level Design}{4}
+\tocline{3em}{2.1.2 Technical Stack}{4}
+\tocline{1.5em}{2.2 Implementation Details}{5}
+\tocline{3em}{2.2.1 Profile and Goal Module}{5}
+\tocline{3em}{2.2.2 Daily Tracking Modules}{5}
+\tocline{3em}{2.2.3 Project Progress}{5}
+\tocline{0em}{3 Results and Evaluation}{6}
+\tocline{1.5em}{3.1 Testing Methodology}{6}
+\tocline{1.5em}{3.2 Performance Metrics}{6}
+\tocline{1.5em}{3.3 Analysis}{7}
+\tocline{0em}{4 Conclusion}{8}
+\tocline{1.5em}{4.1 Summary of Work}{8}
+\tocline{1.5em}{4.2 Key Findings}{8}
+\tocline{1.5em}{4.3 Future Work and Recommendations}{8}
+\tocline{1.5em}{4.4 Final Remarks}{9}
+\clearpage
+
+% ---------------- Chapter 1 (printed page 2) ----------------
+\reportchapter{Introduction}
+\section{Background and Context}
+Health and fitness routines are shaped by everyday choices: what a person eats, how regularly they drink water, and whether their sleep follows a consistent pattern. These behaviours are connected, yet people often record them in separate applications or rely on memory. This makes it difficult to see a useful daily picture or to build consistent habits over time.
+
+WellnessUs is a personal health and fitness tracking system designed to bring these core routines together. It provides a dark, minimal interface for logging meals, water and sleep, with daily totals and weekly or 30-day charts available on the relevant tracking pages. The overview is intentionally concise: it highlights the daily calorie budget, hydration, sleep cycle, a quick meal action and a rotating daily quotation.
+
+\subsection{Problem Statement}
+Many general-purpose trackers either require extensive setup or show estimates without explaining their limits. A user may also enter a meal or water intake after midnight and have it assigned to the wrong day, or enter overlapping sleep records that inflate a daily total. In addition, a single BMI value is not enough to diagnose health or to decide a person's calorie target.
+
+The project therefore addresses the need for a straightforward, persistent and user-specific tracking workflow. It uses date and time at the point of logging, applies validation to sleep sessions, and treats BMI as a screening indicator with age-appropriate limits. Nutrition estimates and goal suggestions are presented as guidance that users can review, adjust and confirm.
+
+\section{Project Objectives}
+\begin{enumerate}
+\item Provide account registration and sign-in, with each person's health records private to that account.
+\item Collect a short, adaptive profile covering age, sex-related calculation context, height, weight, activity and primary and secondary goals.
+\end{enumerate}
+\clearpage
+
+% ---------------- Chapter 1 continuation (printed page 3) ----------------
+\begin{enumerate}
+\setcounter{enumi}{2}
+\item Calculate BMI and show adult screening categories only where appropriate; avoid weight-loss prescriptions based solely on BMI.
+\item Estimate maintenance energy with a documented equation and activity factor, then let users review and confirm editable calorie and protein goals.
+\item Support dated meal, water and sleep logs, food search and nutrition totals, with clear estimates and useful weekly and 30-day views.
+\end{enumerate}
+
+The intended result is a maintainable application that supports routine tracking without presenting itself as a clinical assessment tool. The current implementation concentrates on the core personal workflow; extended exercise, journaling and combined progress reporting are identified as further development.
+\clearpage
+
+% ---------------- Chapter 2 (printed page 4) ----------------
+\reportchapter{Methodology and Design}
+\section{System Architecture}
+WellnessUs uses a client-server design. A React single-page application presents the interface and sends requests to a REST API implemented with Express on Node.js. MongoDB stores user accounts and tracking records through Mongoose models. Authentication uses bcrypt password hashing and signed JWTs in secure, HTTP-only cookies; protected API routes derive ownership from the authenticated account rather than from a client-supplied user ID.
+
+\subsection{High-Level Design}
+The main user workflow is as follows:
+\begin{enumerate}
+\item A user registers or signs in and completes the adaptive lifestyle questionnaire.
+\item The profile service calculates BMI context and an estimated energy reference from the provided profile inputs.
+\item The user reviews suggested calorie and protein goals, edits them if desired, and confirms the goals used by the trackers.
+\item The user records meals, water and sleep; the server validates ownership, dates, amounts and sleep constraints before storing each entry.
+\item The dashboard and tracker pages request saved records and derive daily summaries and 7-day or 30-day charts from those records.
+\end{enumerate}
+
+Food and energy values are estimates. A server-side Gemini explanation is optional and consent-based; it can explain deterministic estimates but does not calculate the authoritative numerical goals. The system remains usable when external provider credentials are absent.
+
+\subsection{Technical Stack}
+\begin{itemize}
+\item Frontend: React with Vite, Tailwind CSS, React Router and Lucide icons.
+\item Charts and API communication: Recharts and Axios.
+\item Backend: Node.js, Express REST endpoints, JWT authentication and bcrypt.
+\item Database: MongoDB with Mongoose schemas, validation and timestamps.
+\end{itemize}
+\clearpage
+
+% ---------------- Chapter 2 continuation (printed page 5) ----------------
+\begin{itemize}
+\item Development and configuration: JavaScript, environment variables, separate frontend and backend packages, and a seed script for common foods. Automated checks use a temporary MongoDB instance.
+\end{itemize}
+
+\section{Implementation Details}
+\subsection{Profile and Goal Module}
+The questionnaire adapts its follow-up options to profile context. Pregnancy and breastfeeding questions are not shown for male respondents, and stale answers are cleared when that context changes. Goal choices reflect the user's stated priorities and BMI context, such as strength or muscle gain in the healthy range and weight gain with muscle building for an underweight adult. BMI is not used as an overall health diagnosis. Automatic calorie guidance is withheld for minors and other cases outside the supported estimation range. Users review and confirm the suggested targets.
+
+\subsection{Daily Tracking Modules}
+Meal entries support breakfast, lunch, dinner and snacks. Users can search seeded common and Indian foods, add custom foods, record servings and quantity, and view estimated calories, protein, carbohydrates, fat and fiber where known. Water entries accept quick-add or custom millilitre amounts. Meal and water logs use the current server time together with a validated browser time zone; editing an entry preserves its recorded date unless the user changes it.
+
+Sleep records include bedtime, wake time and optional notes. Overnight sessions are calculated across midnight and assigned to the wake-up date. A wake date can contain at most two sessions, and their total cannot exceed 24 hours; create, edit, date-change and delete operations recalculate the constraint. The overview shows today's saved summary, while weekly and 30-day charts sit within each tracker.
+
+\subsection{Project Progress}
+Completed: registration, sign-in, protected routes and user-scoped persistence; adaptive profile and confirmed goal workflow; food search and meal logging; hydration and sleep tracking; dashboard summaries; tracker-specific charts; and a standalone browser demonstration.
+
+Completed: server-side validation and ownership checks, optional provider integration boundaries, food seed data, environment examples, setup documentation and automated tests for core calculations and CRUD workflows.
+
+Next: broaden food coverage, verify live third-party provider calls with project credentials, perform interactive browser and accessibility review, and extend deployment safeguards for multi-instance sleep-log concurrency.
+
+The application has not undergone a clinical study or participant usability evaluation. Optional USDA and Gemini calls require configuration and were not verified against live credentials during this evaluation.
+\clearpage
+
+% ---------------- Chapter 3 (printed page 6) ----------------
+\reportchapter{Results and Evaluation}
+\section{Testing Methodology}
+Evaluation combines automated checks against a temporary MongoDB database, production frontend builds, and HTTP smoke checks of the locally served application. Tests cover the principal validation and privacy boundaries as well as calculation and record-management behaviour. Recorded automated results were 33 passing checks out of 33.
+
+\begin{itemize}
+\item Authentication: password hashing, sign-in, protected API access and rejection of unauthenticated requests.
+\item Data isolation and CRUD: users can create, read, update and delete their own records; attempts to access another user's records are denied.
+\item Calculation rules: BMI context, meal nutrition totals, time-zone date grouping, overnight sleep duration and goal confirmation.
+\item Sleep constraints: concurrent create and edit requests, two-session limit, 24-hour maximum, date moves and deletes.
+\item Provider handling: optional explanation response mapping, privacy boundaries, and fallback when a live provider is not configured.
+\end{itemize}
+
+The recorded test suite exercises application logic and API behaviour. It does not establish medical validity, food database accuracy for every serving, or performance at production scale.
+
+\section{Performance Metrics}
+The current evaluation records whether each core capability is implemented and checked. Response-time, throughput, large-dataset and multi-server benchmarks have not been measured; quantitative performance claims are therefore not reported.
+\clearpage
+
+% ---------------- Chapter 3 continuation (printed page 7) ----------------
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{p{0.36\textwidth}|p{0.54\textwidth}}
+\toprule
+\textbf{Metric} & \textbf{Current Status}\\
+\midrule
+Automated checks & 33 of 33 recorded checks passed against temporary MongoDB.\\
+Authentication and ownership & Implemented and covered by API tests.\\
+Meal and hydration logging & CRUD, daily totals and date handling tested.\\
+Sleep duration and limits & Overnight, concurrency, count and total rules tested.\\
+Build and local serving & Production build and HTTP smoke checks passed.\\
+External provider calls & Not live-verified; credentials are optional and absent.\\
+Usability and performance study & Not yet conducted or quantitatively measured.\\
+\bottomrule
+\end{tabular}
+\caption{Current implementation and evaluation status}
+\end{table}
+
+\section{Analysis}
+The completed build brings the core daily routines into one persistent account. Date-aware logging and explicit sleep validation address common data-quality errors, while account ownership checks protect private records. The adaptive profile and user-confirmed goals make the estimates more transparent than a fixed target, and tracker-specific charts keep detailed history close to the activity being reviewed.
+
+The evidence supports functional completion of the principal local workflows and the tested API rules. Several limits remain: nutrition values depend on the selected food and serving estimate; BMI is a screening measure; and suggested energy or protein targets are general estimates. Live external services, hands-on accessibility review, larger-scale performance, and user outcomes remain unverified.
+\clearpage
+
+% ---------------- Chapter 4 (printed page 8) ----------------
+\reportchapter{Conclusion}
+\section{Summary of Work}
+WellnessUs has been developed as a full-stack wellness tracking application with persistent user accounts and a responsive dark interface. The delivered core supports an adaptive lifestyle profile, BMI context, editable and confirmed calorie and protein goals, meal and nutrition logging, hydration, sleep sessions, a concise daily overview, and separate weekly and 30-day tracker charts. A standalone HTML demonstration is also included for viewing the interface without starting the full application.
+
+\section{Key Findings}
+\begin{itemize}
+\item A shared account-based data model can present meal, water and sleep activity together while keeping detailed trends within their own tracker pages.
+\item Validation at the API boundary is essential for reliable day assignment, per-user privacy and preventing invalid sleep totals.
+\item Personalized estimates are most responsible when their assumptions and limits are visible and users can review and confirm their targets.
+\end{itemize}
+
+\section{Future Work and Recommendations}
+\begin{enumerate}
+\item Conduct interactive browser testing across screen sizes, keyboard use and assistive technologies; address findings before wider release.
+\item Configure and verify optional food-data and explanation providers with valid project credentials, while retaining a functional offline fallback.
+\item Expand and review the food catalogue, serving-size coverage and nutrition provenance, especially for regional meals.
+\item Add production operations such as email verification, account recovery, database backups, monitoring and rate-limit tuning.
+\item Enforce sleep-session limits atomically across multiple server instances and evaluate response times with representative datasets.
+\end{enumerate}
+\clearpage
+
+% ---------------- Final page (printed page 9) ----------------
+\section{Final Remarks}
+WellnessUs demonstrates a practical software engineering approach to everyday wellness tracking: persistent records, modular REST APIs, explicit validation and a clear user interface. The current results show that the core workflows and tested rules operate as intended in the local evaluation environment. The project is a tracking and educational aid, not a substitute for professional medical advice; its estimates should be interpreted in that context.
+
+\end{document}
