@@ -1,0 +1,164 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=0.85in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{parskip}
+\setlength{\parskip}{5pt}
+\setlength{\parindent}{0pt}
+\setlist[itemize]{leftmargin=1.45em,itemsep=2pt,topsep=3pt,parsep=0pt}
+\titleformat{\section}{\bfseries\normalsize}{}{0pt}{}
+\titleformat{\subsection}{\bfseries\normalsize}{}{0pt}{}
+\titlespacing*{\section}{0pt}{11pt}{4pt}
+\titlespacing*{\subsection}{0pt}{7pt}{3pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\footnotesize WellnessUs Project Proposal}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\begin{document}
+\begin{center}
+{\bfseries\large WellnessUs: Personalized Health and Fitness Tracking Website}\\[5pt]
+{\bfseries Project Proposal for UCS503P}\\[12pt]
+Submitted to: Ms. Paramveer Kaur\\[5pt]
+Thapar Institute of Engineering and Technology\\[14pt]
+Submitted by: Tejas Singh Tomar -- 1024170387 \qquad Cheerag - 1024170391
+\end{center}
+\vspace{9pt}
+\section*{1. Higher-Order Goal}
+WellnessUs aims to make everyday health and fitness management more accessible by bringing nutrition, hydration, sleep, exercise, and personal progress tracking into one integrated platform. Users often rely on separate tools to record meals, workouts, and measurements, making it difficult to maintain a consistent overview of their habits.
+
+The engineering objective is to design and develop a responsive web application that collects relevant lifestyle preferences, supports structured daily logging, and presents clear, useful progress summaries. The platform will use standard software engineering methods, predefined calculations, and transparent rule-based logic rather than complex artificial intelligence or machine learning.
+
+\section*{2. Time-to-Value}
+\begin{itemize}
+\item Users will be able to create an account, complete a short lifestyle questionnaire, and access a personalized dashboard.
+\item The application will support practical daily actions such as recording meals, viewing calorie and protein totals, and tracking water consumption.
+\item Additional connected records for sleep, workouts, journaling, and weekly measurements will provide an integrated view of wellness habits.
+\item Clear data entry, editable preferences, and straightforward charts will help users review consistency without requiring specialist technical knowledge.
+\end{itemize}
+\section*{3. Problem Statement}
+Nutrition and fitness information is commonly distributed across different applications and personal records. This fragmentation makes it inconvenient for users to understand their daily routines and assess patterns over time.
+
+\begin{itemize}
+\item Meal logging may require repeated manual calculations of calorie and protein intake.
+\item Users may lack a simple way to connect their nutrition records with hydration, sleep, and exercise habits.
+\item Lifestyle and fitness preferences differ, yet many tracking interfaces provide limited personalization.
+\item Without an organized history and visual summaries, users may find it difficult to review their consistency. A unified, understandable tracking platform therefore presents a practical software engineering solution.
+\end{itemize}
+\section*{4. Proposed Solution}
+\subsection*{4.1 Overview}
+WellnessUs will provide the following interconnected modules:
+
+\begin{itemize}
+\item Account and lifestyle profile: registration, authentication, basic profile information, and a questionnaire about activity, exercise frequency, sleep, and personal objectives.
+\item Wellness goals and BMI information: an informational BMI calculation with age-appropriate interpretation and editable tracking preferences.
+\item Meal and nutrition tracking: logging meals and portions, calculating recorded calories and protein using a predefined food database, and viewing daily totals.
+\item Hydration and sleep tracking: recording water intake, bedtime, wake-up time, and sleep history.
+\item Workout and journal records: recording exercises, sessions, personal notes, and activity history.
+\item Progress dashboard: displaying daily summaries, optional weekly weight records, and charts of recorded habits.
+\end{itemize}
+\subsection*{4.2 Core Workflow}
+\begin{itemize}
+\item The user registers, signs in, and answers approximately six questions covering basic profile information and lifestyle habits.
+\item The system saves the responses and displays a wellness profile with customizable tracking goals and relevant general information.
+\item The user records meals by selecting foods and portions; the application calculates and displays calorie and protein totals for each meal and the day.
+\item The user logs hydration, sleep, workout sessions, and optional journal entries or weekly measurements.
+\item The dashboard retrieves stored records and presents daily totals, history, and progress charts.
+\end{itemize}
+\subsection*{4.3 Operational Constraints}
+\begin{itemize}
+\item The system is intended for personal tracking and general education, not medical diagnosis or treatment.
+\item Nutrition information and energy calculations are estimates and will be clearly identified as such.
+\item BMI alone will not be used to prescribe calorie deficits, surpluses, or weight changes; interpretation for minors requires age-appropriate assessment.
+\item Users will control their own records, and access to personal data will require authentication and authorization.
+\end{itemize}
+\section*{5. Solution Approach}
+The project will focus on implementing reliable web application workflows, structured data management, and rule-based calculations without training or integrating machine-learning models.
+
+\subsection*{5.1 Rule-Based Wellness and Nutrition Features}
+\begin{itemize}
+\item A short questionnaire will collect relevant lifestyle details and save user preferences for the dashboard.
+\item Food entries will reference stored nutritional values per serving; quantities will be used to calculate recorded calories and protein.
+\item The application will calculate sleep duration from recorded times and BMI from height and weight, while explaining their limitations.
+\item Users will be able to view and edit their tracking goals rather than receiving unsupported medical or restrictive recommendations.
+\end{itemize}
+\subsection*{5.2 System Architecture}
+\begin{itemize}
+\item Client: responsive React interface for onboarding, dashboard views, logging forms, and reports.
+\item Backend/API: Node.js and Express routes for authentication, validation, business logic, and data retrieval.
+\item Database: MongoDB collections for users, lifestyle profiles, food items, meal records, hydration, sleep, workouts, weight history, and journals.
+\item Visualization: chart components to display daily and weekly history.
+\end{itemize}
+\subsection*{5.3 CI/CD Approach}
+\begin{itemize}
+\item Use Git and GitHub for version control and collaborative development.
+\item Run linting and automated unit or API tests as changes are introduced.
+\item Keep configuration secrets outside source control and document local setup and deployment procedures.
+\end{itemize}
+\section*{6. Evaluation Criteria}
+\subsection*{6.1 Primary Evaluation Metric}
+Core workflow completion rate: the percentage of pilot users able to register, complete onboarding, log a meal, record water intake, and view their dashboard without developer assistance. The target is at least 80\% successful completion during a small usability pilot.
+
+\subsection*{6.2 Secondary Evaluation Metrics}
+\begin{itemize}
+\item Usability: average ease-of-use rating on a five-point scale.
+\item Data integrity: proportion of meal, hydration, and other records saved and retrieved correctly.
+\item Calculation correctness: agreement of nutrition totals, sleep duration, and BMI with predefined test cases.
+\item Reliability and performance: successful API requests and response times for common actions.
+\end{itemize}
+\subsection*{6.3 Pilot Validation Plan}
+\begin{itemize}
+\item Invite classmates or volunteer participants to test the application with non-sensitive sample data.
+\item Ask participants to complete representative onboarding, logging, editing, and reporting tasks.
+\item Collect task completion, usability ratings, and feedback to improve navigation and validation.
+\end{itemize}
+\section*{7. Scalability}
+The client-server architecture separates interface, business logic, and persistence responsibilities, allowing future deployment and maintenance of each layer. Database indexes and date-based queries can support efficient retrieval of user histories as the amount of recorded data grows.
+
+Future extensions may include broader food databases, wearable-device integration, reminders, and richer analytics, subject to privacy, accuracy, and maintenance considerations.
+
+\section*{8. Technology Stack}
+\begin{itemize}
+\item Frontend: React.js and Tailwind CSS.
+\item Backend: Node.js and Express.js with REST APIs.
+\item Database: MongoDB.
+\item Authentication: JWT-based authentication and secure password hashing.
+\item Charts: Recharts for wellness history and progress visualization.
+\item Development and testing: Visual Studio Code, Git/GitHub, Postman, and a suitable JavaScript test framework. These technologies support a maintainable, modular application without dependence on AI APIs or specialized machine-learning infrastructure.
+\end{itemize}
+\section*{9. Project Scope and Deliverables}
+\subsection*{9.1 Core Functional Deliverables}
+\begin{itemize}
+\item Responsive website with account creation, sign-in, profile editing, and a personal dashboard.
+\item Lifestyle questionnaire and saved wellness preferences.
+\item Informational BMI calculator and editable wellness tracking goals.
+\item Meal logging with per-meal and daily calorie/protein summaries using stored food data.
+\item Daily hydration tracking with progress display.
+\end{itemize}
+\subsection*{9.2 Additional Functional and Engineering Deliverables}
+\begin{itemize}
+\item Sleep logging, workout records, optional weekly weight history, and daily journaling.
+\item Charts and date-filtered summaries of tracked habits.
+\item Database schema, REST API documentation, input validation, and user-specific data access controls.
+\item SRS, relevant UML diagrams, test cases, source code, and deployment documentation.
+\end{itemize}
+\section*{10. Risks and Mitigations}
+\begin{itemize}
+\item Inaccurate nutrition information: use documented food values, clear serving sizes, and editable entries; identify calculated values as estimates.
+\item Misinterpretation of BMI or energy balance: provide educational context and avoid automated prescriptive weight-change targets.
+\item Personal data privacy: enforce access controls, secure authentication, and data minimization.
+\item Incomplete or inconsistent user entries: apply form validation, clear error messages, and editable records.
+\item Excessive feature scope: maintain modular functionality and prioritize reliable core workflows and testing.
+\item Limited usability feedback: conduct focused pilot testing with clear tasks and short questionnaires.
+\end{itemize}
+\section*{11. Summary}
+WellnessUs proposes a unified web-based platform for personalized wellness recordkeeping, meal and protein tracking, hydration, sleep, workouts, journaling, and progress review. The system will use a lifestyle questionnaire, transparent calculations, a structured database, and a responsive dashboard to help users organize their daily habits.
+
+The project is designed as a practical software engineering implementation emphasizing requirement analysis, modular architecture, secure data handling, validation, testing, and usability. Its purpose is to provide accessible tracking and educational information rather than medical diagnosis or automated nutritional prescriptions.
+
+\end{document}
